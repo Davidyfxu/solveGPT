@@ -27,7 +27,11 @@ const Home = () => {
       <Header>
         <Nav mode="horizontal" defaultSelectedKeys={["Home"]}>
           <Nav.Header>
-            <Image width={250} height={70} src={"src/assets/solveGPT.jpg"} />
+            <Image
+              width={250}
+              height={70}
+              src={"https://i.postimg.cc/hPGmrvNj/solveGPT.png"}
+            />
           </Nav.Header>
           <Nav.Item
             itemKey="classNote"
