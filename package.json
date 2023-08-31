@@ -9,19 +9,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@douyinfe/semi-ui": "^2.42.2",
     "@douyinfe/semi-icons": "^2.42.2",
+    "@douyinfe/semi-ui": "^2.42.2",
+    "date-fns": "^2.30.0",
     "prettier": "^3.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@vitejs/plugin-react": "^3.1.0",
+    "lodash": "latest",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0",
-    "lodash": "latest"
+    "vite": "^4.1.0"
   }
 }

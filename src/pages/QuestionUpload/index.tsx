@@ -1,35 +1,77 @@
-import React from "react";
-import { Button, Upload } from "@douyinfe/semi-ui";
+import React, { useState } from "react";
+import {
+  Button,
+  List,
+  Space,
+  Upload,
+  Typography,
+  Toast,
+} from "@douyinfe/semi-ui";
 import { IconUpload } from "@douyinfe/semi-icons";
-
+import { answerGPT, getOCR } from "../api";
+const { Title } = Typography;
 const QuestionUpload = () => {
+  const [OCRs, setOCRs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const handleUpload = async ({ file, fileList }) => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async function () {
+        const base64String = reader.result;
+        setLoading(true);
+        const { data } = await getOCR({ imageLink: base64String });
+        console.log(data);
+        setOCRs((o) => [...o, ...data]);
+        setLoading(false);
+        Toast.success("识别成功");
+      };
+      // 读取文件内容
+      reader.readAsDataURL(fileList[0].fileInstance);
+    } catch (e) {
+      console.error("customRequest", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getAnswer = async (question: string) => {
+    try {
+      setLoading(true);
+      const { choices } = await answerGPT({ question });
+      Toast.info(choices.join("; "));
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div>
-      <input type="file" onChange={(e) => console.log(e)} />
-      <Upload
-        listType="picture"
-        headers={{
-          authorization: "authorization-text",
-        }}
-        beforeUpload={async (file) => {
-          try {
-            const API_BASE_URL = "http://118.89.117.111";
-            const formData = new FormData();
-            formData.append("image", file.file.fileInstance);
-            console.log("file", file);
-            const res = await fetch(API_BASE_URL + "/submitImage", {
-              method: "POST",
-              body: formData,
-            });
-            console.log(res);
-            const result = await res.json();
-            console.log(result);
-          } catch (e) {
-            console.error("customRequest", e);
-          }
-        }}
-      ></Upload>
-    </div>
+    <Space style={{ width: "100%" }} vertical align={"center"}>
+      <Upload limit={1} showUploadList={false} beforeUpload={handleUpload}>
+        <Button icon={<IconUpload />} theme="light">
+          点击上传
+        </Button>
+      </Upload>
+      <List
+        style={{ width: "100%" }}
+        header={<Title>识别结果</Title>}
+        bordered
+        loading={loading}
+        dataSource={OCRs}
+        renderItem={(item) => (
+          <List.Item>
+            {item?.DetectedText}
+            <Button
+              style={{ marginLeft: 32 }}
+              onClick={() => getAnswer(item?.DetectedText)}
+              theme={"borderless"}
+            >
+              AI解答
+            </Button>
+          </List.Item>
+        )}
+      />
+    </Space>
   );
 };
 
