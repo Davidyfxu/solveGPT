@@ -16,7 +16,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "react-latex": "^2.0.0",
+    "react-pdf": "^7.3.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
@@ -24,6 +26,7 @@
     "@vitejs/plugin-react": "^3.1.0",
     "lodash": "latest",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "sass": "^1.66.1"
   }
 }

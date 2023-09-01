@@ -1,12 +1,11 @@
 import React from "react";
 import { Layout, Nav, Button, Image } from "@douyinfe/semi-ui";
 import {
-  IconSemiLogo,
-  IconBell,
   IconHome,
-  IconLive,
-  IconSetting,
   IconMoon,
+  IconHistogram,
+  IconFolderOpen,
+  IconServer,
 } from "@douyinfe/semi-icons";
 import { Outlet, useNavigate } from "react-router-dom";
 
@@ -34,21 +33,21 @@ const Home = () => {
             />
           </Nav.Header>
           <Nav.Item
-            itemKey="classNote"
-            text="课堂讲义"
-            icon={<IconHome size="large" />}
-            onClick={() => navigator("/class-note")}
-          />
-          <Nav.Item
             itemKey="questionUpload"
             text="题目管理"
-            icon={<IconLive size="large" />}
+            icon={<IconServer size="large" />}
             onClick={() => navigator("/question-upload")}
+          />
+          <Nav.Item
+            itemKey="classNote"
+            text="课堂讲义"
+            icon={<IconFolderOpen size="large" />}
+            onClick={() => navigator("/class-note")}
           />
           <Nav.Item
             itemKey="chat"
             text="自动批改"
-            icon={<IconSetting size="large" />}
+            icon={<IconHistogram size="large" />}
             onClick={() => navigator("/chat")}
           />
           <Nav.Footer>
