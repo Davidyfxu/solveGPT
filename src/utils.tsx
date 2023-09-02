@@ -1,6 +1,4 @@
 import React from "react";
-import { Avatar } from "@douyinfe/semi-ui";
-import { IconMore } from "@douyinfe/semi-icons";
 
 const BASE_URL = "https://hb1v2x4vc9.us.aircode.run";
 export const post = async (url: string, body: any) => {
