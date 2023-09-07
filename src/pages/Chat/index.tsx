@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
+  Card,
   Descriptions,
   Form,
   Space,
@@ -69,60 +70,66 @@ const Chat = () => {
 
   return (
     <div className={styles.container}>
-      <Form style={{ padding: "8px 0" }}>
-        <Title>SolveGPT--AI集智数学老师</Title>
-        <Form.Select
-          className={styles.item}
-          field="model"
-          label={"支持模型列表:"}
-          placeholder={"请选择模型"}
-          optionList={model_options}
-        />
-        <Form.Select
-          className={styles.item}
-          field="language"
-          label={"答案语种设置:"}
-          placeholder={"请选择答案语种"}
-          optionList={lang_options}
-        />
-        <Form.Select
-          className={styles.item}
-          field="age"
-          label={"使用年龄阶段选项:"}
-          placeholder={"请选择使用年龄阶段"}
-          optionList={age_options}
-        />
-        <Form.TextArea
-          className={styles.item}
-          field="text"
-          label={"问题:"}
-          placeholder={"请输入想问的问题"}
-          showCounter
-          maxCount={500}
-        />
-        <Space>
-          <Button theme="solid" type="warning">
-            图片转文字
-          </Button>
-          <Button type="primary" theme="solid">
-            一键解题
-          </Button>
-          <Button theme="solid" type="secondary">
-            存知识库
-          </Button>
-          <Button theme="solid" type="tertiary">
-            查看PDF
-          </Button>
-        </Space>
-      </Form>
-      <div>
-        <Title>知识与答案</Title>
+      <Card
+        style={{ backgroundColor: "rgba(var(--semi-light-blue-0), 1)" }}
+        title={<Title>SolveGPT--AI集智数学老师</Title>}
+      >
+        <Form>
+          <Form.Select
+            className={styles.item}
+            field="model"
+            label={"支持模型列表:"}
+            placeholder={"请选择模型"}
+            optionList={model_options}
+          />
+          <Form.Select
+            className={styles.item}
+            field="language"
+            label={"答案语种设置:"}
+            placeholder={"请选择答案语种"}
+            optionList={lang_options}
+          />
+          <Form.Select
+            className={styles.item}
+            field="age"
+            label={"使用年龄阶段选项:"}
+            placeholder={"请选择使用年龄阶段"}
+            optionList={age_options}
+          />
+          <Form.TextArea
+            className={styles.item}
+            field="text"
+            label={"问题:"}
+            placeholder={"请输入想问的问题"}
+            showCounter
+            maxCount={500}
+          />
+          <Space>
+            <Button theme="solid" type="warning">
+              图片转文字
+            </Button>
+            <Button type="primary" theme="solid">
+              一键解题
+            </Button>
+            <Button theme="solid" type="secondary">
+              存知识库
+            </Button>
+            <Button theme="solid" type="tertiary">
+              查看PDF
+            </Button>
+          </Space>
+        </Form>
+      </Card>
+
+      <Card
+        style={{ backgroundColor: "rgba(var(--semi-blue-0), 1)" }}
+        title={<Title>知识与答案</Title>}
+      >
         <Descriptions row size="large" data={desc_list} />
-      </div>
-      <div>
-        <Title>知识宝库</Title>
+      </Card>
+      <Card title={<Title>知识宝库</Title>}>
         <Table loading={tLoading} columns={columns} dataSource={questions} />
-      </div>
+      </Card>
     </div>
   );
 };

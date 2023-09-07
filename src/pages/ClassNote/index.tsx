@@ -23,7 +23,7 @@ const ClassNote = () => {
     try {
       setLoading(true);
       const { notes = [] } = await getNotes({});
-      setNoteList(notes);
+      setNoteList(notes.map((note, index) => ({ ...note, key: index })));
     } catch (e) {
       console.error(e);
     } finally {
@@ -41,7 +41,12 @@ const ClassNote = () => {
 
   return (
     <div style={{ margin: 8 }}>
-      <NoteTable kindMap={kindMap} noteList={noteList} loading={loading} />
+      <NoteTable
+        kindMap={kindMap}
+        noteList={noteList}
+        setNoteList={setNoteList}
+        loading={loading}
+      />
     </div>
   );
 };
