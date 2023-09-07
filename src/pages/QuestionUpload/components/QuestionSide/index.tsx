@@ -2,6 +2,7 @@ import { SideSheet, Form, Button, Toast } from "@douyinfe/semi-ui";
 import React, { useEffect, useRef, useState } from "react";
 import { addNote, getNoteKinds } from "../../../api";
 import styles from "./index.module.scss";
+import { know_questions_options } from "../../../../utils/const";
 const { Input, Select, TextArea, Slider, Rating } = Form;
 const QuestionSideSheet = (props: any) => {
   const { sideV, setSideV } = props;
@@ -71,6 +72,14 @@ const QuestionSideSheet = (props: any) => {
           field="definition"
           label="定义"
           placeholder="请填写该数学概念的定义"
+          rules={[{ required: true, message: "必填项" }]}
+        />
+        <Select
+          className={styles.allWidth}
+          field="knowOrQues"
+          label="题目/知识"
+          placeholder="请选择题目还是知识"
+          optionList={know_questions_options}
           rules={[{ required: true, message: "必填项" }]}
         />
         <Rating

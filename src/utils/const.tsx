@@ -53,3 +53,8 @@ export const columns = [
     dataIndex: "definition",
   },
 ];
+
+export const know_questions_options = [
+  { value: "题目", label: "题目" },
+  { value: "知识", label: "知识" },
+];
