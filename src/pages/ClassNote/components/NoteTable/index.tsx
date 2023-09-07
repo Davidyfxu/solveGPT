@@ -2,7 +2,16 @@ import React, { useMemo, useState } from "react";
 import { DndProvider, DragSource, DropTarget } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-import { Button, Progress, Rating, Table } from "@douyinfe/semi-ui";
+import {
+  Button,
+  Card,
+  Progress,
+  Rating,
+  Space,
+  Table,
+  Typography,
+} from "@douyinfe/semi-ui";
+const { Title } = Typography;
 import { format } from "date-fns";
 import { exportFile } from "../../../../utils/utils";
 let draggingIndex = -1;
@@ -75,7 +84,6 @@ const NoteTable = (props: any) => {
       setExportItems(selectedRows);
     },
   };
-
   const components = useMemo(
     () => ({
       body: {
@@ -88,19 +96,41 @@ const NoteTable = (props: any) => {
     {
       title: "分类",
       dataIndex: "id",
-      width: 80,
+      width: 90,
+      filters: Object.keys(kindMap).map((k) => ({
+        value: k,
+        text: kindMap[k],
+      })),
+      onFilter: (value, record) => String(record.id) === value,
       render: (text: number) => kindMap[text],
     },
     {
       title: "概念",
       dataIndex: "term",
-      width: 150,
+      width: 120,
       render: (text: string) => text,
     },
     {
       title: "定义",
       dataIndex: "definition",
       width: 300,
+      render: (text: string) => text,
+    },
+    {
+      title: "题目/知识",
+      dataIndex: "knowOrQues",
+      width: 120,
+      filters: [
+        {
+          value: "题目",
+          text: "题目",
+        },
+        {
+          value: "知识",
+          text: "知识",
+        },
+      ],
+      onFilter: (value, record) => record?.knowOrQues === value,
       render: (text: string) => text,
     },
     {
@@ -151,27 +181,57 @@ const NoteTable = (props: any) => {
     const newData = [...noteList];
     newData.splice(totalDragIndex, 1);
     newData.splice(totalHoverIndex, 0, dragRow);
-    // setNoteList(newData);
     setNoteList(newData);
   };
   return (
-    <div style={{ padding: "0 16px" }}>
-      <Button theme="solid" onClick={() => exportFile(exportItems)}>
-        一键导出
-      </Button>
-      <DndProvider backend={HTML5Backend}>
-        <Table
-          loading={loading}
-          columns={columns}
-          dataSource={noteList}
-          components={components}
-          rowSelection={rowSelection}
-          onRow={(record, index) => ({
-            index,
-            moveRow,
-          })}
-        />
-      </DndProvider>
+    <div style={{ display: "flex", gap: 16 }}>
+      <div style={{ width: "75%" }}>
+        <DndProvider backend={HTML5Backend}>
+          <Table
+            bordered
+            loading={loading}
+            columns={columns}
+            dataSource={noteList}
+            components={components}
+            rowSelection={rowSelection}
+            onRow={(record, index) => ({
+              index,
+              moveRow,
+            })}
+          />
+        </DndProvider>
+      </div>
+      <Space
+        vertical
+        style={{
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Title>预览区</Title>
+          <Button theme="solid" onClick={() => exportFile(exportItems)}>
+            一键导出
+          </Button>
+        </div>
+        {exportItems.map((c) => (
+          <Card
+            style={{
+              width: "100%",
+              backgroundColor: "rgba(var(--semi-light-blue-0), 1)",
+            }}
+            title={c?.term}
+          >
+            {c?.definition}
+          </Card>
+        ))}
+      </Space>
     </div>
   );
 };

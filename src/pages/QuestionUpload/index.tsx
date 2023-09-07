@@ -29,7 +29,6 @@ const QuestionUpload = () => {
         const base64String = reader.result;
         setLoading(true);
         const { data } = await getOCR({ imageLink: base64String });
-        console.log(data);
         setOCRs((o) => [...o, ...data]);
         setLoading(false);
         Toast.success("识别成功");
