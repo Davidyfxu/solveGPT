@@ -61,3 +61,6 @@ export const exportFile = (exportItems: any) => {
   utils.book_append_sheet(wb, ws, "Data");
   writeFileXLSX(wb, "math_notes.xlsx");
 };
+export const exportPDF = async (exportItems: any[]) => {
+  console.log(123, exportItems);
+};

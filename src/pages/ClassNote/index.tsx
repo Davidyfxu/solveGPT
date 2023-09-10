@@ -6,12 +6,13 @@ const ClassNote = () => {
   const [loading, setLoading] = useState(false);
   const [kindMap, setKindMap] = useState({});
   const [noteList, setNoteList] = useState([]);
+  const [refresh, setRefresh] = useState(0);
   const get_note_kinds = async () => {
     try {
       setLoading(true);
       let res = {};
       const { note_kinds = [] } = await getNoteKinds({});
-      note_kinds.forEach((k) => (res[k.value] = k.label));
+      note_kinds.forEach((k) => (res[k.value] = k));
       setKindMap(res);
     } catch (e) {
       console.error(e);
@@ -33,11 +34,11 @@ const ClassNote = () => {
 
   useEffect(() => {
     void get_note_kinds();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     void get_notes();
-  }, []);
+  }, [refresh]);
 
   return (
     <div style={{ margin: 8 }}>
@@ -46,6 +47,8 @@ const ClassNote = () => {
         noteList={noteList}
         setNoteList={setNoteList}
         loading={loading}
+        setLoading={setLoading}
+        setRefresh={setRefresh}
       />
     </div>
   );

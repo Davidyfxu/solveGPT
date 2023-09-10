@@ -83,7 +83,6 @@ const QuestionUpload = () => {
             theme="solid"
             type="primary"
             onClick={() => {
-              console.log(123123123);
               setVisible(true);
             }}
           >

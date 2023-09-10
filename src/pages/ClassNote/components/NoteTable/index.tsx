@@ -9,11 +9,13 @@ import {
   Rating,
   Space,
   Table,
+  Toast,
   Typography,
 } from "@douyinfe/semi-ui";
 const { Title } = Typography;
 import { format } from "date-fns";
-import { exportFile } from "../../../../utils/utils";
+import { exportFile, exportPDF } from "../../../../utils/utils";
+import { deleteNote, deleteNoteKind } from "../../../api";
 let draggingIndex = -1;
 function BodyRow(props) {
   const {
@@ -77,7 +79,8 @@ const DraggableBodyRow = DropTarget("row", rowTarget, (connect, monitor) => ({
   }))(BodyRow),
 );
 const NoteTable = (props: any) => {
-  const { noteList, kindMap, loading, setNoteList } = props;
+  const { noteList, kindMap, loading, setNoteList, setLoading, setRefresh } =
+    props;
   const [exportItems, setExportItems] = useState([]);
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -92,6 +95,32 @@ const NoteTable = (props: any) => {
     }),
     [],
   );
+
+  const delete_note = async (_id: string) => {
+    try {
+      setLoading(true);
+      const { result } = await deleteNote({ _id });
+      if (result?.deletedCount > 0) {
+        Toast.success("删除成功");
+        setTimeout(() => setRefresh((r) => r + 1), 500);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const delete_note_kind = async (id: string) => {
+    try {
+      const { result } = await deleteNoteKind({ _id: kindMap[id]?._id });
+      if (result?.deletedCount > 0) {
+        Toast.success("删除成功");
+        setTimeout(() => window.location.reload(), 500);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
   const columns = [
     {
       title: "分类",
@@ -99,10 +128,10 @@ const NoteTable = (props: any) => {
       width: 90,
       filters: Object.keys(kindMap).map((k) => ({
         value: k,
-        text: kindMap[k],
+        text: kindMap[k]?.label,
       })),
       onFilter: (value, record) => String(record.id) === value,
-      render: (text: number) => kindMap[text],
+      render: (text: number) => kindMap[text]?.label,
     },
     {
       title: "概念",
@@ -172,6 +201,16 @@ const NoteTable = (props: any) => {
       sorter: (a: any, b: any) => a.star - b.star,
       render: (text: number) => <Rating disabled defaultValue={text} />,
     },
+    {
+      title: "操作",
+      dataIndex: "_id",
+      render: (text: string, record: any) => (
+        <Space>
+          <Button onClick={() => delete_note(text)}>删除概念</Button>
+          <Button onClick={() => delete_note_kind(record?.id)}>删除分类</Button>
+        </Space>
+      ),
+    },
   ];
 
   const moveRow = (dragIndex, hoverIndex) => {
@@ -217,7 +256,10 @@ const NoteTable = (props: any) => {
         >
           <Title>预览区</Title>
           <Button theme="solid" onClick={() => exportFile(exportItems)}>
-            一键导出
+            导出Excel
+          </Button>
+          <Button theme="solid" onClick={() => exportPDF(exportItems)}>
+            导出课件
           </Button>
         </div>
         {exportItems.map((c) => (
